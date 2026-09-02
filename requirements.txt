@@ -1,0 +1,7 @@
+langchain
+langchain-core
+langchain-community
+langchain-mistralai
+langchain-groq
+python-dotenv
+langgraph
