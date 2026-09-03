@@ -1,5 +1,5 @@
 from langchain_community.document_loaders import PyPDFLoader,TextLoader,CSVLoader,UnstructuredPowerPointLoader
-from .text_splitter import chunk_pdf_txt,chunk_csv,chunk_ppt
+from text_splitter import chunk_pdf_txt,chunk_csv,chunk_ppt
 from langsmith import traceable
 import os
 
