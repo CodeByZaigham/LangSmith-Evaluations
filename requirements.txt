@@ -9,3 +9,5 @@ langgraph
 pypdf
 langchain-faiss
 faiss-cpu
+sentence-transformers
+langchain-tavily

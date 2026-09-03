@@ -6,8 +6,13 @@ from langchain_core.runnables import RunnablePassthrough,RunnableParallel,Runnab
 from langsmith import traceable
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 path="RAG_appication/Ian Goodfellow, Yoshua Bengio, Aaron Courville - Deep Learning (2017, MIT).pdf"
+
+os.environ["langsmith-tracings"]="RAG APPLICATION"
 
 @traceable(name="RAG_Pipeline")
 def run_pipeline(query:str):
