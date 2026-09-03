@@ -2,7 +2,10 @@ langchain
 langchain-core
 langchain-community
 langchain-mistralai
+langchain-huggingface
 langchain-groq
 python-dotenv
 langgraph
 pypdf
+langchain-faiss
+faiss-cpu
