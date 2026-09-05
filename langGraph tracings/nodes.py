@@ -2,8 +2,10 @@ from langsmith import traceable
 from state import state
 from langchain_groq import ChatGroq
 from pydantic import BaseModel,Field
+from dotenv import load_dotenv
+load_dotenv()
 
-llm=ChatGroq(llm="openai/gpt-oss-120b")
+llm=ChatGroq(model="openai/gpt-oss-120b")
 
 class EvaluationSchema(BaseModel):
      feedback: str = Field(description="Detailed feedback for the essay")
