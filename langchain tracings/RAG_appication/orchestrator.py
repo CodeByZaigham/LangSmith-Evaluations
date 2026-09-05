@@ -2,6 +2,7 @@ from document_loader import load_file
 from embeddings import create_embeddings
 from retriever import retrieve_embeddings
 from LLM import get_LLM
+from pathlib import Path
 from langchain_core.runnables import RunnablePassthrough,RunnableParallel,RunnableLambda
 from langsmith import traceable
 from langchain_core.prompts import ChatPromptTemplate
@@ -10,16 +11,17 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-path="RAG_appication/Ian Goodfellow, Yoshua Bengio, Aaron Courville - Deep Learning (2017, MIT).pdf"
+from pathlib import Path
 
-os.environ["langsmith-tracings"]="RAG APPLICATION"
+path = Path(__file__).parent / "deep learning book.pdf"
+
+os.environ["LANGCHAIN_PROJECT"]="RAG APPLICATION"
 
 @traceable(name="RAG_Pipeline")
-def run_pipeline(query:str):
-    documents=load_file(path)
+def run_pipeline():
+    documents=load_file(str(path))
     db=create_embeddings(documents)
-    chunks=retrieve_embeddings(query,db)
-    return chunks
+    return db
 
 def format_docs(docs):
     return "".join(d.page_content for d in docs)
@@ -51,27 +53,27 @@ prompt = ChatPromptTemplate.from_messages([
     ("human", "{question}")
 ])
 
+db=run_pipeline()
 
-
-# retriever_chain=RunnableParallel({
-#     "context": ,
-#     "question":RunnablePassthrough()
-# })
+retriever_chain=RunnableParallel({
+    "context": RunnableLambda(lambda x: x["context"]) | RunnableLambda(retrieve_embeddings) | RunnableLambda(format_docs),
+    "question":RunnableLambda(lambda x: x["question"]["query"]) | RunnablePassthrough()
+})
 
 parser=StrOutputParser()
 
 print("WELCOME TO RAG CHATBOT, PRESS 0 TO EXIT")
 
-chain= prompt | get_LLM() | parser
+chain= retriever_chain | prompt | get_LLM() | parser
+
+config={"run_name":"rag chat"}
 
 while True:
     query=input("ask any question related to the uploaded document: ")
     if query=="0": break
-    context=format_docs(run_pipeline(query))
-    config={"run_name":"rag chat"}
     response=chain.invoke({
-        "question":query,
-        "context":context
+        "context":{"query":query , "db":db},
+        "question":{"query":query}
     },config=config)
     print(response)
 
