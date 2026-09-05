@@ -1,5 +1,6 @@
 from typing import TypedDict,List,Annotated
 from langgraph.graph import add_messages
+import operator
 
 class state(TypedDict):
      essay: str
@@ -7,5 +8,5 @@ class state(TypedDict):
      analysis_feedback: str
      clarity_feedback: str
      overall_feedback: str
-     individual_scores: Annotated[List[int], add_messages]
+     individual_scores: Annotated[List[int], operator.add]
      avg_score: float

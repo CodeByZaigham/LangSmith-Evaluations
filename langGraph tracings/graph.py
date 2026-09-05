@@ -26,3 +26,7 @@ print("Clarity feedback:\n", result.get("clarity_feedback", ""), "\n")
 print("Overall feedback:\n", result.get("overall_feedback", ""), "\n")
 print("Individual scores:", result.get("individual_scores", []))
 print("Average score:", result.get("avg_score", 0.0))
+
+#each graph execution is a trace
+#a node is a run inside that trace
+# you can also visualize the path taken
