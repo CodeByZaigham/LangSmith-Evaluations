@@ -1,3 +1,3 @@
-from langsmith import traceable
-from state import state
-from langchain_groq import ChatGroq
+import os
+
+os.environ["LANGCHAIN_PROJECT"]="RAG APPLICATION"
