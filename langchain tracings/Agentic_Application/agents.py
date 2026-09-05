@@ -1,10 +1,13 @@
 from langchain.agents import create_agent
-from langchain_mistralai import ChatMistralAI
+from langchain_groq import ChatGroq
 from tools import search_tool,get_weather
 from dotenv import load_dotenv
 load_dotenv()
+import os
 
-llm=ChatMistralAI(model_name="mistral-medium-latest")
+llm=ChatGroq(model="openai/gpt-oss-120b")
+
+os.environ["LANGCHAIN_PROJECT"] = "Agentic Application"
 
 agent = create_agent(
     model=llm,
